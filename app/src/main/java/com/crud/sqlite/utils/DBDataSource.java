@@ -7,6 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class DBDataSource {
 
     // inisiasi SQlite Database
@@ -40,7 +42,10 @@ public class DBDataSource {
         dbHelper.close();
     }
 
-    /* METHOD UNTUK INSERT DATA */
+
+
+
+    /* CREATE DATA */
     public Items create(String itemsName, String itemsBrand, String itemsPrice) {
         /*
         membuat sebuah content_values, yang berfungsi
@@ -83,8 +88,6 @@ public class DBDataSource {
 
         // buat objek barang baru
         Items items = new Items();
-//        Log.d("INFO", "the getLong" + cursor.getLong(0));
-//        Log.d("INFO", "the setLatLng " + cursor.getString(1) + ", " + cursor.getString(2));
 
         items.setItems_id(cursor.getLong(0));
         items.setItems_name(cursor.getString(1));
@@ -93,6 +96,36 @@ public class DBDataSource {
 
         return items;
     }
+
+    /* LISTING DATA */
+    public ArrayList<Items> listing() {
+        ArrayList<Items> listItem   = new ArrayList<Items>();
+
+        // select all sql query
+        Cursor cursor = database.query(DBHelper.TABLE_NAME,
+                allColumns,
+                null,
+                null,
+                null,
+                null,
+                null);
+        // pindah ke data paling pertama
+        cursor.moveToFirst();
+
+        // jika masih ada data, masukkan data barang ke daftar barang
+        while (!cursor.isAfterLast()) {
+            Items items = cursorToBarang(cursor);
+            listItem.add(items);
+
+            cursor.moveToNext();
+        }
+
+        // close cursor
+        cursor.close();
+        return listItem;
+    }
+
+
 
 
 }
