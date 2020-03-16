@@ -3,17 +3,37 @@ package com.crud.sqlite;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.crud.sqlite.utils.DBDataSource;
+import com.crud.sqlite.utils.Items;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
+
+    private DBDataSource dbDataSource; // initial controller
+
+    // recycleView
+    private RecyclerView rvView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<Items> listItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +45,17 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("Listing Data");
         setSupportActionBar(toolbar);
 
+        // initial page
+        rvView  = (RecyclerView) findViewById(R.id.rvListing);
+        layoutManager = new LinearLayoutManager(this);
+        rvView.setHasFixedSize(true);
+        rvView.setLayoutManager(layoutManager);
+
+        dbDataSource = new DBDataSource(this);
+        dbDataSource.open();
+        listData();
+
+        // Button Create
         FloatingActionButton fab = findViewById(R.id.fabCreate);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +63,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, CreateActivity.class));
             }
         });
+    }
+
+    public void listData() {
+        // get all item
+        listItem  = dbDataSource.listData();
+
+        /*
+        initial adapater dan items dalam bentuk arrayList, dan
+        men-set adapater ke dalam recycleView
+         */
+        adapter = new MainActivityAdapter(listItem, MainActivity.this);
+        rvView.setAdapter(adapter);
     }
 
     @Override

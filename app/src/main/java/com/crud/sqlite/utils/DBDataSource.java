@@ -84,21 +84,8 @@ public class DBDataSource {
         return newItem;
     }
 
-    public Items cursorToBarang(Cursor cursor) {
-
-        // buat objek barang baru
-        Items items = new Items();
-
-        items.setItems_id(cursor.getLong(0));
-        items.setItems_name(cursor.getString(1));
-        items.setItems_brand(cursor.getString(2));
-        items.setItems_price(cursor.getString(3));
-
-        return items;
-    }
-
     /* LISTING DATA */
-    public ArrayList<Items> listing() {
+    public ArrayList<Items> listData() {
         ArrayList<Items> listItem   = new ArrayList<Items>();
 
         // select all sql query
@@ -123,6 +110,19 @@ public class DBDataSource {
         // close cursor
         cursor.close();
         return listItem;
+    }
+
+    public Items cursorToBarang(Cursor cursor) {
+
+        // buat objek barang baru
+        Items items = new Items();
+
+        items.setItems_id(cursor.getLong(0));
+        items.setItems_name(cursor.getString(1));
+        items.setItems_brand(cursor.getString(2));
+        items.setItems_price(cursor.getString(3));
+
+        return items;
     }
 
 
