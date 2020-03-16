@@ -65,11 +65,12 @@ public class CreateActivity extends AppCompatActivity implements View.OnClickLis
             items = dbDataSource.create(name, brand, price);
 
             if (!isEmpty(items.getItems_name())) {
-                Toast.makeText(this, "success :" + items, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, items.getItems_name() + " Success added!", Toast.LENGTH_LONG).show();
 
                 itemsName.setText("");
                 itemsBrand.setText("");
                 itemsPrice.setText("");
+                finish();
 
                 // Log.d("INFO", "save: " + items);
                 // Log.d("INFO", "save: " + items.getItems_name());
