@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         dbDataSource = new DBDataSource(this);
         dbDataSource.open();
-        listData();
+
 
         // Button Create
         FloatingActionButton fab = findViewById(R.id.fabCreate);
@@ -67,4 +68,11 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MainActivityAdapter(listItem, MainActivity.this);
         rvView.setAdapter(adapter);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        listData();
+    }
+
 }

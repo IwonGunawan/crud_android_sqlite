@@ -95,7 +95,7 @@ public class DBDataSource {
                 null,
                 null,
                 null,
-                null);
+                "items_id DESC");
         // pindah ke data paling pertama
         cursor.moveToFirst();
 

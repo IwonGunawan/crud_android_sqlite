@@ -7,12 +7,12 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cv_listing"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:cardCornerRadius="4dp">
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:id="@+id/cv_listing"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        app:cardCornerRadius="4dp">-->
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_profile"
@@ -20,7 +20,7 @@
             android:layout_height="55dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:src="@drawable/ic_filter_hdr_blue_24dp"
+            android:src="@drawable/ic_filter_blue_24dp"
             tools:src="@android:color/darker_gray" />
 
         <LinearLayout
@@ -28,7 +28,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="60dp"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@+id/img_profile"
             android:orientation="vertical">
@@ -47,7 +46,7 @@
                 android:hint="@string/items_price" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+<!--    </androidx.cardview.widget.CardView>-->
 
 </RelativeLayout>
 

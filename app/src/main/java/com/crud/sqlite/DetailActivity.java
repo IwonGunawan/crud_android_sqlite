@@ -8,24 +8,31 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crud.sqlite.utils.DBDataSource;
-
-import org.w3c.dom.Text;
+import com.crud.sqlite.utils.Items;
 
 
 public class DetailActivity extends AppCompatActivity {
 
     private DBDataSource dbDataSource;
+    private Items items;
+
+    // set variable
     private long itemsId;
     private String itemsName;
     private String itemsBrand;
     private String itemsPrice;
+
+    // initial
+    private TextView items_name;
+    private TextView items_brand;
+    private TextView items_price;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +45,35 @@ public class DetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // initial
-        TextView items_name   = (TextView) findViewById(R.id.items_name);
-        TextView items_brand  = (TextView) findViewById(R.id.items_brand);
-        TextView items_price  = (TextView) findViewById(R.id.items_price);
+        items_name   = (TextView) findViewById(R.id.items_name);
+        items_brand  = (TextView) findViewById(R.id.items_brand);
+        items_price  = (TextView) findViewById(R.id.items_price);
 
         // get intent
         Intent intent = getIntent();
         itemsId     = intent.getLongExtra("id", 0);
-        itemsName   = intent.getStringExtra("name");
-        itemsBrand  = intent.getStringExtra("brand");
-        itemsPrice  = intent.getStringExtra("price");
+//        itemsName   = intent.getStringExtra("name");
+//        itemsBrand  = intent.getStringExtra("brand");
+//        itemsPrice  = intent.getStringExtra("price");
 
         // open connection
         dbDataSource = new DBDataSource(this);
         dbDataSource.open();
+    }
 
-        // set value
+    public void onResume() {
+        super.onResume();
+        detail();
+    }
+
+    public void detail() {
         if (itemsId > 0) {
+            // get detail
+            items = dbDataSource.getItems(itemsId);
+            itemsName   = items.getItems_name();
+            itemsBrand  = items.getItems_brand();
+            itemsPrice  = items.getItems_price();
+
             items_name.setText(itemsName);
             items_brand.setText(itemsBrand);
             items_price.setText(itemsPrice);
@@ -62,11 +81,33 @@ public class DetailActivity extends AppCompatActivity {
         else {
             Toast.makeText(this, "Data not Found", Toast.LENGTH_LONG).show();
         }
-
     }
 
-    public static Intent getActIntent(Activity activity) {
-        return new Intent(activity, DetailActivity.class);
+    public void delBox() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage("Are you sure delete this data ?");
+
+        alert.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dbDataSource.delete(itemsId);
+                        dbDataSource.close();
+                        finish();
+
+                        Toast.makeText(DetailActivity.this, "Data Deleted!", Toast.LENGTH_LONG).show();
+                    }
+                });
+        alert.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //
+                    }
+                });
+
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
     }
 
     @Override
@@ -104,32 +145,10 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void delBox() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage("Are you sure delete this data ?");
-
-        alert.setPositiveButton("Yes",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dbDataSource.delete(itemsId);
-                        dbDataSource.close();
-                        finish();
-
-                        Toast.makeText(DetailActivity.this, "Data Deleted!", Toast.LENGTH_LONG).show();
-                    }
-                });
-        alert.setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //
-                    }
-                });
-
-        AlertDialog alertDialog = alert.create();
-        alertDialog.show();
+    public static Intent getActIntent(Activity activity) {
+        return new Intent(activity, DetailActivity.class);
     }
+
 
 
 }

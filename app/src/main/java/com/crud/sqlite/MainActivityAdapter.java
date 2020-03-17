@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.crud.sqlite.utils.Items;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -47,19 +48,30 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         // menampilkan data pada view
         final String name   = listItem.get(position).getItems_name();
         final String price  = listItem.get(position).getItems_price();
+        int priceInt        = Integer.parseInt(price);
+        String priceFormat  = "Rp. " + NumberFormat.getInstance().format(priceInt);
 
         holder.itemsName.setText(name);
-        holder.itemsPrice.setText(price);
+        holder.itemsPrice.setText(priceFormat);
         // detail
-        holder.cvListing.setOnClickListener(new View.OnClickListener() {
+        holder.ltListing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 context.startActivity(DetailActivity.getActIntent((Activity) context)
                         .putExtra("id", listItem.get(position).getItems_id())
-                        .putExtra("name", listItem.get(position).getItems_name())
-                        .putExtra("brand", listItem.get(position).getItems_brand())
-                        .putExtra("price", listItem.get(position).getItems_price())
+//                        .putExtra("name", listItem.get(position).getItems_name())
+//                        .putExtra("brand", listItem.get(position).getItems_brand())
+//                        .putExtra("price", listItem.get(position).getItems_price())
+                );
+            }
+        });
+        holder.circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(DetailActivity.getActIntent((Activity) context)
+                        .putExtra("id", listItem.get(position).getItems_id())
+
                 );
             }
         });
@@ -73,7 +85,8 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         // initial view pada item_main.xml
-        CardView cvListing;
+        // CardView cvListing;
+        de.hdodenhof.circleimageview.CircleImageView circleImageView;
         LinearLayout ltListing;
         TextView itemsName;
         TextView itemsPrice;
@@ -81,10 +94,13 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cvListing   = (CardView) itemView.findViewById(R.id.cv_listing);
+            //cvListing   = (CardView) itemView.findViewById(R.id.cv_listing);
+            circleImageView = (de.hdodenhof.circleimageview.CircleImageView) itemView.findViewById(R.id.img_profile);
             ltListing   = (LinearLayout) itemView.findViewById(R.id.linear_layout);
             itemsName   = (TextView) itemView.findViewById(R.id.items_name);
             itemsPrice  = (TextView) itemView.findViewById(R.id.items_price);
         }
     }
+
+
 }
