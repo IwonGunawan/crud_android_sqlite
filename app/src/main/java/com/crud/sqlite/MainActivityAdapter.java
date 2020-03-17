@@ -2,6 +2,7 @@ package com.crud.sqlite;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             public void onClick(View v) {
 
                 context.startActivity(DetailActivity.getActIntent((Activity) context)
+                        .putExtra("id", listItem.get(position).getItems_id())
                         .putExtra("name", listItem.get(position).getItems_name())
                         .putExtra("brand", listItem.get(position).getItems_brand())
                         .putExtra("price", listItem.get(position).getItems_price())

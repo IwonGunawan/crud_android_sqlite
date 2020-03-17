@@ -10,7 +10,7 @@ public class Items {
     public Items() {
     }
 
-    public long getItems_id() {
+    public Long getItems_id() {
         return items_id;
     }
 

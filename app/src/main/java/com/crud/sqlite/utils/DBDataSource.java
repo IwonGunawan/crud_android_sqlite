@@ -112,6 +112,46 @@ public class DBDataSource {
         return listItem;
     }
 
+    /* DETAIL DATA */
+    public Items getItems(long id) {
+        Items items = new Items(); // initial items
+        //select query
+        Cursor cursor = database.query(DBHelper.TABLE_NAME,
+                allColumns,
+                "items_id = " + id,
+                null,
+                null,
+                null,
+                null);
+        // ambil data pertama
+        cursor.moveToFirst();
+        // masukkan cursor ke object items
+        items = cursorToBarang(cursor);
+        // close connection
+        cursor.close();
+        return items;
+    }
+
+    /* UPDATE DATA */
+    public void update(Items i) {
+        // memasukan ke content values
+        ContentValues args = new ContentValues();
+
+        String whereClause = "items_id=" + i.getItems_id();
+
+        // masukan data sesuai dengan kolom pada database
+        args.put(DBHelper.COLUMN_NAME, i.getItems_name());
+        args.put(DBHelper.COLUMN_BRAND, i.getItems_brand());
+        args.put(DBHelper.COLUMN_PRICE, i.getItems_price());
+
+
+        // update query
+       database.update(DBHelper.TABLE_NAME,
+               args,
+               whereClause,
+               null);
+    }
+
     public Items cursorToBarang(Cursor cursor) {
 
         // buat objek barang baru
@@ -124,7 +164,6 @@ public class DBDataSource {
 
         return items;
     }
-
 
 
 
