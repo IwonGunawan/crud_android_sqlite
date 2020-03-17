@@ -152,6 +152,12 @@ public class DBDataSource {
                null);
     }
 
+    public void delete(long itemsId) {
+        database.delete(DBHelper.TABLE_NAME,
+                "items_id=" + itemsId,
+                null);
+    }
+
     public Items cursorToBarang(Cursor cursor) {
 
         // buat objek barang baru

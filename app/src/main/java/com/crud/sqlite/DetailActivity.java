@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,11 +14,14 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crud.sqlite.utils.DBDataSource;
+
 import org.w3c.dom.Text;
 
 
 public class DetailActivity extends AppCompatActivity {
 
+    private DBDataSource dbDataSource;
     private long itemsId;
     private String itemsName;
     private String itemsBrand;
@@ -43,6 +48,10 @@ public class DetailActivity extends AppCompatActivity {
         itemsName   = intent.getStringExtra("name");
         itemsBrand  = intent.getStringExtra("brand");
         itemsPrice  = intent.getStringExtra("price");
+
+        // open connection
+        dbDataSource = new DBDataSource(this);
+        dbDataSource.open();
 
         // set value
         if (itemsId > 0) {
@@ -96,10 +105,31 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void delBox() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage("Are you sure delete this data ?");
 
+        alert.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dbDataSource.delete(itemsId);
+                        dbDataSource.close();
+                        finish();
+
+                        Toast.makeText(DetailActivity.this, "Data Deleted!", Toast.LENGTH_LONG).show();
+                    }
+                });
+        alert.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //
+                    }
+                });
+
+        AlertDialog alertDialog = alert.create();
+        alertDialog.show();
     }
 
-    public void delete() {
 
-    }
 }

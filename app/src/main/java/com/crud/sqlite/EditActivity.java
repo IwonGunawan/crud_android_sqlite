@@ -81,6 +81,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
 
         dbDataSource.update(items);
         dbDataSource.close();
+
         Toast.makeText(this, "Success update data", Toast.LENGTH_LONG).show();
         finish();
     }
