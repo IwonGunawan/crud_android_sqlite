@@ -10,11 +10,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crud.sqlite.utils.DBDataSource;
+import com.crud.sqlite.utils.DBHelper;
 import com.crud.sqlite.utils.Items;
+
+import java.text.NumberFormat;
 
 
 public class DetailActivity extends AppCompatActivity {
@@ -43,6 +47,13 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Detail Data");
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         // initial
         items_name   = (TextView) findViewById(R.id.items_name);
@@ -52,9 +63,6 @@ public class DetailActivity extends AppCompatActivity {
         // get intent
         Intent intent = getIntent();
         itemsId     = intent.getLongExtra("id", 0);
-//        itemsName   = intent.getStringExtra("name");
-//        itemsBrand  = intent.getStringExtra("brand");
-//        itemsPrice  = intent.getStringExtra("price");
 
         // open connection
         dbDataSource = new DBDataSource(this);
@@ -72,7 +80,7 @@ public class DetailActivity extends AppCompatActivity {
             items = dbDataSource.getItems(itemsId);
             itemsName   = items.getItems_name();
             itemsBrand  = items.getItems_brand();
-            itemsPrice  = items.getItems_price();
+            itemsPrice  = numberFormat(items.getItems_price());
 
             items_name.setText(itemsName);
             items_brand.setText(itemsBrand);
@@ -149,6 +157,12 @@ public class DetailActivity extends AppCompatActivity {
         return new Intent(activity, DetailActivity.class);
     }
 
+    public String numberFormat(String s) {
+        int number      = Integer.parseInt(s);
+        String result   = "Rp. " + NumberFormat.getInstance().format(number);
+
+        return result;
+    }
 
 
 }

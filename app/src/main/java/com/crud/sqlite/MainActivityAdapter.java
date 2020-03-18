@@ -47,12 +47,10 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
         // menampilkan data pada view
         final String name   = listItem.get(position).getItems_name();
-        final String price  = listItem.get(position).getItems_price();
-        int priceInt        = Integer.parseInt(price);
-        String priceFormat  = "Rp. " + NumberFormat.getInstance().format(priceInt);
+        final String price  = numberFormat(listItem.get(position).getItems_price());
 
         holder.itemsName.setText(name);
-        holder.itemsPrice.setText(priceFormat);
+        holder.itemsPrice.setText(price);
         // detail
         holder.ltListing.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,9 +58,6 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
 
                 context.startActivity(DetailActivity.getActIntent((Activity) context)
                         .putExtra("id", listItem.get(position).getItems_id())
-//                        .putExtra("name", listItem.get(position).getItems_name())
-//                        .putExtra("brand", listItem.get(position).getItems_brand())
-//                        .putExtra("price", listItem.get(position).getItems_price())
                 );
             }
         });
@@ -100,6 +95,13 @@ public class MainActivityAdapter extends RecyclerView.Adapter<MainActivityAdapte
             itemsName   = (TextView) itemView.findViewById(R.id.items_name);
             itemsPrice  = (TextView) itemView.findViewById(R.id.items_price);
         }
+    }
+
+    public String numberFormat(String s) {
+        int number      = Integer.parseInt(s);
+        String result   = "Rp. " + NumberFormat.getInstance().format(number);
+
+        return result;
     }
 
 

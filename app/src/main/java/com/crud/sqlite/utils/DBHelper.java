@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.NumberFormat;
+
 public class DBHelper extends SQLiteOpenHelper {
 
     /*
@@ -48,4 +50,5 @@ public class DBHelper extends SQLiteOpenHelper {
 
         Log.w(DBHelper.class.getName(), "upgrading database from version " + oldVersion + " To " + newVersion + " , which will destroy all old data");
     }
+
 }
